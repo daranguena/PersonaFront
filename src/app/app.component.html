@@ -1,0 +1,62 @@
+<div class="formularioRegistro">
+  <h2>Crear Persona</h2>
+  <form [formGroup]="personaForm" (ngSubmit)="guardar()" id="persona-form">
+    <div class="form-group">
+      <label>Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Apellido</label>
+      <input id="apellido" type="text" formControlName="apellido" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Edad</label>
+      <input id="edad" type="number" formControlName="edad" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Pais</label>
+      <select name="pais" id="pais" formControlName="pais" class="form-control" >
+        <option [ngValue]="item" *ngFor="let item of paises" [selected]="item.id==idPaisSeleccionado" >{{item.nombre}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Estado</label>
+      <select name="estado" id="estado" formControlName="estado" class="form-control">
+        <option [ngValue]="item" *ngFor="let item of estados" [selected]="item.id==idEstadoSeleccionado">{{item.nombre}}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="personaForm.invalid" >guardar</button>
+  </form>
+</div>
+<div class="formularioRegistro">
+  <h2>Personas registradas</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Edad</th>
+        <th>Pais</th>
+        <th>Estado</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of personas | paginate: { id: 'tablePersona', itemsPerPage: 5, currentPage: page }">
+        <td>{{item.id}}</td>
+        <td>{{item.nombre}}</td>
+        <td>{{item.apellido}}</td>
+        <td>{{item.edad}}</td>
+        <td>{{item.pais.nombre}}</td>
+        <td>{{item.estado.nombre}}</td>
+        <td>
+          <button type="button" class="btn btn-success" (click)="editarPersona(item)">Editar</button>
+          <button type="button" class="btn btn-danger" (click)="eliminar(item)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls  id="tablePersona" (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+</div>
+<router-outlet></router-outlet>
